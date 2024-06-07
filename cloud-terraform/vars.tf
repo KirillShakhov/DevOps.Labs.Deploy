@@ -1,0 +1,45 @@
+// Common
+
+variable "service_account_key_file" {
+  type    = string
+  default = "./key/key.json"
+}
+
+variable "cloud_id" {
+  type = string
+  default = "b1gn3qr6tj34r8cf7u85"
+}
+
+variable "folder_id" {
+  type = string
+  default = "b1g2eu9iuna0k6l2b6aq"
+}
+
+variable "zone" {
+  type    = string
+  default = "ru-central1-b"
+}
+
+// Network
+
+variable "network_name" {
+  type = string
+}
+
+variable "v4_cidr_blocks" {
+  type = list(string)
+}
+
+// VPC
+
+variable "vm_name" {
+  type = string
+}
+
+variable "image_id" {
+  type = string
+}
+
+variable "ip_address" {
+  type = string
+}
