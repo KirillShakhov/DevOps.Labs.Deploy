@@ -15,19 +15,6 @@ variable "folder_id" {
 }
 
 variable "zone" {
-  type    = string
+  type = string
   default = "ru-central1-a"
-}
-
-// Network
-variable "network_name" {
-  type = string
-}
-
-variable "v4_cidr_blocks" {
-  type = list(string)
-}
-
-variable "ip_address" {
-  type = string
 }

@@ -31,16 +31,20 @@ resource "yandex_resourcemanager_folder_iam_member" "encrypterDecrypter" {
   member    = "serviceAccount:${yandex_iam_service_account.k8s_account.id}"
 }
 
-resource "yandex_kms_symmetric_key" "kms_key" {
-  name              = "kms-key"
-  default_algorithm = "AES_128"
-  rotation_period   = "8760h" // 1 year
+resource "yandex_vpc_network" "default_network" {
+  name = "default-network"
+}
+
+resource "yandex_vpc_subnet" "default_subnet" {
+  network_id = yandex_vpc_network.default_network.id
+  zone       = var.zone
+  v4_cidr_blocks = ["10.128.0.0/24"]
 }
 
 resource "yandex_vpc_security_group" "k8s_public_services" {
   name        = "k8s-public-services"
   description = "Security group for public services in Kubernetes cluster"
-  network_id  = yandex_vpc_network.devops_network.id
+  network_id  = yandex_vpc_network.default_network.id
 
   ingress {
     protocol          = "TCP"
@@ -61,7 +65,7 @@ resource "yandex_vpc_security_group" "k8s_public_services" {
   ingress {
     protocol          = "ANY"
     description       = "Allow pod-to-pod and service-to-service communication"
-    v4_cidr_blocks    = yandex_vpc_subnet.devops_subnet.v4_cidr_blocks
+    v4_cidr_blocks    = yandex_vpc_subnet.default_subnet.v4_cidr_blocks
     from_port         = 0
     to_port           = 65535
   }
@@ -93,14 +97,14 @@ resource "yandex_kubernetes_cluster" "k8s_cluster" {
   name        = "k8s-zonal"
   description = "Kubernetes cluster in a single zone"
 
-  network_id = yandex_vpc_network.devops_network.id
+  network_id = yandex_vpc_network.default_network.id
 
   master {
     version = "1.28"
 
     zonal {
-      zone      = yandex_vpc_subnet.devops_subnet.zone
-      subnet_id = yandex_vpc_subnet.devops_subnet.id
+      zone      = yandex_vpc_subnet.default_subnet.zone
+      subnet_id = yandex_vpc_subnet.default_subnet.id
     }
 
     public_ip = true
@@ -127,10 +131,6 @@ resource "yandex_kubernetes_cluster" "k8s_cluster" {
 
   release_channel         = "RAPID"
   network_policy_provider = "CALICO"
-
-  kms_provider {
-    key_id = yandex_kms_symmetric_key.kms_key.id
-  }
 }
 
 resource "yandex_kubernetes_node_group" "worker_nodes" {
@@ -148,7 +148,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
 
     network_interface {
       nat        = true
-      subnet_ids = [yandex_vpc_subnet.devops_subnet.id]
+      subnet_ids = [yandex_vpc_subnet.default_subnet.id]
     }
 
     resources {
