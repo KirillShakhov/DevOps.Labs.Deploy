@@ -10,3 +10,4 @@ override.tf.json
 terraform.rc
 .terraform/
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
