@@ -31,85 +31,36 @@ resource "yandex_resourcemanager_folder_iam_member" "encrypterDecrypter" {
   member    = "serviceAccount:${yandex_iam_service_account.k8s_account.id}"
 }
 
-resource "yandex_vpc_network" "default_network" {
-  name = "default-network"
-}
+resource "null_resource" "wait_for_roles" {
+  depends_on = [
+    yandex_resourcemanager_folder_iam_member.k8s-clusters-agent,
+    yandex_resourcemanager_folder_iam_member.vpc-public-admin,
+    yandex_resourcemanager_folder_iam_member.images-puller,
+    yandex_resourcemanager_folder_iam_member.encrypterDecrypter,
+  ]
 
-resource "yandex_vpc_subnet" "default_subnet" {
-  network_id = yandex_vpc_network.default_network.id
-  zone       = var.zone
-  v4_cidr_blocks = ["10.128.0.0/24"]
-}
-
-resource "yandex_vpc_security_group" "k8s_public_services" {
-  name        = "k8s-public-services"
-  description = "Security group for public services in Kubernetes cluster"
-  network_id  = yandex_vpc_network.default_network.id
-
-  ingress {
-    protocol          = "TCP"
-    description       = "Allow availability checks from load balancer"
-    predefined_target = "loadbalancer_healthchecks"
-    from_port         = 0
-    to_port           = 65535
-  }
-
-  ingress {
-    protocol          = "ANY"
-    description       = "Allow master-to-node and node-to-node communication"
-    predefined_target = "self_security_group"
-    from_port         = 0
-    to_port           = 65535
-  }
-
-  ingress {
-    protocol          = "ANY"
-    description       = "Allow pod-to-pod and service-to-service communication"
-    v4_cidr_blocks    = yandex_vpc_subnet.default_subnet.v4_cidr_blocks
-    from_port         = 0
-    to_port           = 65535
-  }
-
-  ingress {
-    protocol       = "ICMP"
-    description    = "Allow debugging ICMP packets from internal subnets"
-    v4_cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-  }
-
-  ingress {
-    protocol       = "TCP"
-    description    = "Allow incoming traffic from the internet to NodePort range"
-    v4_cidr_blocks = ["0.0.0.0/0"]
-    from_port      = 30000
-    to_port        = 32767
-  }
-
-  egress {
-    protocol       = "ANY"
-    description    = "Allow all outgoing traffic"
-    v4_cidr_blocks = ["0.0.0.0/0"]
-    from_port      = 0
-    to_port        = 65535
+  provisioner "local-exec" {
+    command = "sleep 60"
   }
 }
 
 resource "yandex_kubernetes_cluster" "k8s_cluster" {
-  name        = "k8s-zonal"
+  depends_on = [null_resource.wait_for_roles]
+
+  name        = "k8s-devops"
   description = "Kubernetes cluster in a single zone"
 
-  network_id = yandex_vpc_network.default_network.id
+  network_id = "default"
 
   master {
     version = "1.28"
 
     zonal {
-      zone      = yandex_vpc_subnet.default_subnet.zone
-      subnet_id = yandex_vpc_subnet.default_subnet.id
+      zone      = var.zone
+      subnet_id = "default"
     }
 
     public_ip = true
-
-    security_group_ids = [yandex_vpc_security_group.k8s_public_services.id]
 
     maintenance_policy {
       auto_upgrade = true
@@ -148,7 +99,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
 
     network_interface {
       nat        = true
-      subnet_ids = [yandex_vpc_subnet.default_subnet.id]
+      subnet_ids = ["default"]
     }
 
     resources {
