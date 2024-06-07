@@ -18,3 +18,15 @@ variable "zone" {
   type = string
   default = "ru-central1-a"
 }
+
+variable "network_id" {
+  description = "The ID of the VPC network to use"
+  type        = string
+  default = "enpmavohokhsnbvbnl1k"
+}
+
+variable "subnet_id" {
+  description = "The ID of the VPC subnet to use"
+  type        = string
+  default = "e9b1jl3s6q5471ne30aa"
+}

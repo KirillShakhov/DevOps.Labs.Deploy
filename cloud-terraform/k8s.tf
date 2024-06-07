@@ -31,33 +31,26 @@ resource "yandex_resourcemanager_folder_iam_member" "encrypterDecrypter" {
   member    = "serviceAccount:${yandex_iam_service_account.k8s_account.id}"
 }
 
-resource "null_resource" "wait_for_roles" {
-  depends_on = [
-    yandex_resourcemanager_folder_iam_member.k8s-clusters-agent,
-    yandex_resourcemanager_folder_iam_member.vpc-public-admin,
-    yandex_resourcemanager_folder_iam_member.images-puller,
-    yandex_resourcemanager_folder_iam_member.encrypterDecrypter,
-  ]
+resource "yandex_vpc_network" "default" {
+  name = "default"
+}
 
-  provisioner "local-exec" {
-    command = "sleep 60"
-  }
+data "yandex_vpc_subnet" "default-ru-central1-a" {
+  subnet_id = var.subnet_id
 }
 
 resource "yandex_kubernetes_cluster" "k8s_cluster" {
-  depends_on = [null_resource.wait_for_roles]
-
   name        = "k8s-devops"
   description = "Kubernetes cluster in a single zone"
 
-  network_id = "default"
+  network_id = var.network_id
 
   master {
-    version = "1.28"
+    version = "1.29"
 
     zonal {
       zone      = var.zone
-      subnet_id = "default"
+      subnet_id = data.yandex_vpc_subnet.default-ru-central1-a.id
     }
 
     public_ip = true
@@ -88,7 +81,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
   cluster_id  = yandex_kubernetes_cluster.k8s_cluster.id
   name        = "worker-nodes"
   description = "Worker nodes for Kubernetes cluster"
-  version     = "1.28"
+  version     = "1.29"
 
   labels = {
     "key" = "value"
@@ -99,7 +92,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
 
     network_interface {
       nat        = true
-      subnet_ids = ["default"]
+      subnet_ids = [var.subnet_id]
     }
 
     resources {
@@ -123,7 +116,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
 
   scale_policy {
     fixed_scale {
-      size = 3
+      size = 1
     }
   }
 
