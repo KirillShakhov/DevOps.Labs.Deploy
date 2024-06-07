@@ -96,7 +96,7 @@ resource "yandex_kubernetes_cluster" "k8s_cluster" {
   network_id = yandex_vpc_network.devops_network.id
 
   master {
-    version = "1.27"
+    version = "1.28"
 
     zonal {
       zone      = yandex_vpc_subnet.devops_subnet.zone
@@ -137,7 +137,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
   cluster_id  = yandex_kubernetes_cluster.k8s_cluster.id
   name        = "worker-nodes"
   description = "Worker nodes for Kubernetes cluster"
-  version     = "1.27"
+  version     = "1.28"
 
   labels = {
     "key" = "value"
