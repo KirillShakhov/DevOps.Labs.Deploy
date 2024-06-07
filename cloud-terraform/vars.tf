@@ -1,5 +1,4 @@
 // Common
-
 variable "service_account_key_file" {
   type    = string
   default = "./key/key.json"
@@ -21,23 +20,12 @@ variable "zone" {
 }
 
 // Network
-
 variable "network_name" {
   type = string
 }
 
 variable "v4_cidr_blocks" {
   type = list(string)
-}
-
-// VPC
-
-variable "vm_name" {
-  type = string
-}
-
-variable "image_id" {
-  type = string
 }
 
 variable "ip_address" {
