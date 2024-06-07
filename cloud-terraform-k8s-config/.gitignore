@@ -1,0 +1,13 @@
+kubeconfig
+
+# Ignore terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfvars
+crash.log
+override.tf
+override.tf.json
+terraform.rc
+.terraform/
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
