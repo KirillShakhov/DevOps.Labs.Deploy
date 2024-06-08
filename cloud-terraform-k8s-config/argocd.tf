@@ -5,5 +5,11 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   version          = var.chart_version
   create_namespace = true
-  values           = [file("${path.module}/argocd.yaml")]
+  values           = [file("${path.module}/config/argocd.yaml")]
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig_path
+  }
 }

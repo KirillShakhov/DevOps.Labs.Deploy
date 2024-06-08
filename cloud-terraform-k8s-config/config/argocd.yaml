@@ -1,0 +1,18 @@
+server:
+  service:
+    type: LoadBalancer
+  config:
+    resource.customizations: |
+      networking.k8s.io/Ingress:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          return hs        
+
+configs:
+  secret:
+    argocdServerAdminPassword: "qwertyqwerty" # real password is here
+  repositories:
+    - url: https://gitlab.se.ifmo.ru/KirillShakhov/devops.labs.deploy/-/tree/lab4/k8s-manifests
+      name: root
+      type: git
