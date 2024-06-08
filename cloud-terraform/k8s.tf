@@ -31,10 +31,6 @@ resource "yandex_resourcemanager_folder_iam_member" "encrypterDecrypter" {
   member    = "serviceAccount:${yandex_iam_service_account.k8s_account.id}"
 }
 
-resource "yandex_vpc_network" "default" {
-  name = "default"
-}
-
 data "yandex_vpc_subnet" "default-ru-central1-a" {
   subnet_id = var.subnet_id
 }

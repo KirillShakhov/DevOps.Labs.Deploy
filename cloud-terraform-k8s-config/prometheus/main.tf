@@ -96,7 +96,7 @@ resource "kubernetes_deployment" "prometheus" {
           name  = "prometheus"
           image = "prom/prometheus:v2.30.0"
 
-          ports {
+          port {
             container_port = 9090
           }
 
