@@ -1,6 +1,5 @@
 variable "kubeconfig_path" {
   type    = string
-  default = "./kubeconfig"  # Укажите путь к вашему файлу kubeconfig
 }
 
 variable "chart_version" {
@@ -9,14 +8,19 @@ variable "chart_version" {
   default     = "5.46.0"
 }
 
-variable "git_repo_url" {
-  description = "URL of the Git repository"
+variable "git_source_repoURL" {
+  description = "GitSource repoURL to Track and deploy to EKS by ROOT Application"
+  type        = string
+}
+
+variable "git_source_path" {
+  description = "GitSource Path in Git Repository to Track and deploy to EKS by ROOT Application"
   type        = string
   default     = ""
 }
 
-variable "repo_path" {
-  description = "Path to the folder in the Git repository"
+variable "git_source_targetRevision" {
+  description = "GitSource HEAD or Branch to Track and deploy to EKS by ROOT Application"
   type        = string
-  default     = ""
+  default     = "HEAD"
 }

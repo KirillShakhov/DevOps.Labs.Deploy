@@ -1,5 +1,14 @@
-#----------------------------------------------------------------
-# Fixing issue with Stuck Processing for Ingress resource
+crds:
+  keep: false
+
+configs:
+  secret:
+    argocdServerAdminPassword: "qwertyqwerty" # real password is here
+  repositories:
+    - url: ${repoURL}
+      name: root
+      type: git
+
 server:
   service:
     type: LoadBalancer
