@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-service
+  template:
+    metadata:
+      labels:
+        app: chat-service
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: chat-service
+        image: kirillshakhov/chat-service:1.0
+        ports:
+        - containerPort: 9994
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "200Mi"
+          limits:
+            cpu: "200m"
+            memory: "400Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-service
+spec:
+  ports:
+  - port: 9994
+    targetPort: 9994
+  selector:
+    app: chat-service

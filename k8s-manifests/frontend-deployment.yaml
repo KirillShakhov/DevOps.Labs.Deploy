@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: frontend
+        image: kirillshakhov/devops-frontend-image:1.6
+        env:
+        - name: PORT
+          value: "3000"
+        - name: REACT_APP_API_URL
+          value: "http://<EXTERNAL-IP-OF-FACADE-SERVICE>:8080"
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "150m"
+            memory: "300Mi"
+          limits:
+            cpu: "300m"
+            memory: "600Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: frontend

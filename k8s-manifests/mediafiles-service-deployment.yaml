@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediafiles-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mediafiles-service
+  template:
+    metadata:
+      labels:
+        app: mediafiles-service
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: mediafiles-service
+        image: kirillshakhov/mediafiles-service:1.0
+        ports:
+        - containerPort: 9993
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "200Mi"
+          limits:
+            cpu: "200m"
+            memory: "400Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mediafiles-service
+spec:
+  ports:
+  - port: 9993
+    targetPort: 9993
+  selector:
+    app: mediafiles-service
