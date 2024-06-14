@@ -15,7 +15,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: auth-service
-        image: kirillshakhov/auth-service:8.0
+        image: kirillshakhov/auth-service:9.0
         ports:
         - containerPort: 9992
         env:
