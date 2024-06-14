@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: facade-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: facade-service
@@ -49,4 +49,4 @@ spec:
     name: facade-service
   minReplicas: 2
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
+  targetCPUUtilizationPercentage: 10
