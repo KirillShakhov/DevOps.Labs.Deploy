@@ -49,9 +49,13 @@ spec:
   minReplicas: 2
   maxReplicas: 5
   metrics:
-    - type: Resource
-      resource:
-        name: cpu
+    - type: External
+      external:
+        metric:
+          name: prometheus-query
+          selector:
+            matchLabels:
+              query-name: processed-events-per-second
         target:
-          type: Utilization
-          averageUtilization: 15
+          type: AverageValue
+          averageValue: "10"
