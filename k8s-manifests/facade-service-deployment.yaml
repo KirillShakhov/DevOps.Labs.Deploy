@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: facade-service
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: facade-service
@@ -38,7 +37,7 @@ spec:
   selector:
     app: facade-service
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: facade-service
@@ -47,6 +46,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: facade-service
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 10
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 15
