@@ -5,8 +5,7 @@ metadata:
   name: ingress
 spec:
   rules:
-    - host: 158.160.123.207
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
