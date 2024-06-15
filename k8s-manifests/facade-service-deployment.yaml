@@ -14,7 +14,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: facade-service
-        image: kirillshakhov/facade-service:6bc7fd82
+        image: kirillshakhov/facade-service:eb54fcd4
         ports:
         - containerPort: 8080
         resources:
