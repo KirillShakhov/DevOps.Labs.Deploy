@@ -15,7 +15,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: mediafiles-service
-        image: kirillshakhov/mediafiles-service:8.0
+        image: kirillshakhov/mediafiles-service:6bc7fd82
         ports:
         - containerPort: 9993
         resources:
