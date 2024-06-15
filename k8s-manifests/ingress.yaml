@@ -16,35 +16,7 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
-          - path: /login
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-service
-                port:
-                  number: 80
-          - path: /register
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-service
-                port:
-                  number: 80
-          - path: /dashboard
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend-service
-                port:
-                  number: 80
-          - path: /auth/signin
-            pathType: Prefix
-            backend:
-              service:
-                name: facade-service
-                port:
-                  number: 8080
-          - path: /auth/signup
+          - path: /auth
             pathType: Prefix
             backend:
               service:
