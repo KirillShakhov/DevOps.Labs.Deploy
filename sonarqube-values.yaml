@@ -1,3 +1,9 @@
+# helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
+# helm repo list
+# helm install my-sonarqube sonarqube/sonarqube --namespace sonarqube --create-namespace --values sonarqube-values.yaml --version 10.5.1
+# kubectl get statefulset,pods,services --namespace sonarqube
+# kubectl port-forward svc/my-sonarqube-sonarqube 31111:31111 --namespace sonarqube
+
 service:
   type: NodePort
   nodePort: 31111
