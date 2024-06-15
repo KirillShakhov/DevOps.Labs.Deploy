@@ -33,7 +33,7 @@ spec:
   type: NodePort
   ports:
   - port: 8080
-#    targetPort: 8080
+    targetPort: 8080
   selector:
     app: facade-service
 ---
@@ -54,5 +54,5 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 15
+          averageUtilization: 40
 
