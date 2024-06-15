@@ -4,6 +4,7 @@ kind: Ingress
 metadata:
   name: ingress
   annotations:
+    kubectl.kubernetes.io/last-applied-configuration: ""
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
