@@ -30,7 +30,7 @@ kind: Service
 metadata:
   name: facade-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - port: 8080
 #    targetPort: 8080
