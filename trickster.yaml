@@ -6,7 +6,7 @@ frontend:
 origins:
   - name: default
     originType: prometheus
-    originURL: http://my-prom-prometheus-server:80
+    originURL: http://my-kube-prometheus-prometheus.default.svc.cluster.local:9090
 profiler:
   enabled: false
   port: 6060

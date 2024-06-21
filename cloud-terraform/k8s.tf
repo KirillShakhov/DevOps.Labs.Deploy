@@ -25,6 +25,12 @@ resource "yandex_resourcemanager_folder_iam_member" "images-puller" {
   member    = "serviceAccount:${yandex_iam_service_account.k8s_account.id}"
 }
 
+resource "yandex_resourcemanager_folder_iam_member" "editor" {
+  folder_id = local.folder_id
+  role      = "editor"
+  member    = "serviceAccount:${yandex_iam_service_account.k8s_account.id}"
+}
+
 resource "yandex_resourcemanager_folder_iam_member" "encrypterDecrypter" {
   folder_id = local.folder_id
   role      = "kms.keys.encrypterDecrypter"
