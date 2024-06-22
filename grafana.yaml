@@ -62,6 +62,13 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/grafana
               name: grafana-pv
+          env:
+            - name: GF_AUTH_BASIC_ENABLED
+              value: "true"
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -75,8 +82,8 @@ spec:
   ports:
     - port: 3000
       protocol: TCP
-      targetPort: 666
+      targetPort: http-grafana
   selector:
     app: grafana
   sessionAffinity: None
-  type: LoadBalancer
+  type: NodePort
