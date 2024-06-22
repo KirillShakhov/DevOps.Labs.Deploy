@@ -19,8 +19,6 @@ spec:
         env:
         - name: PORT
           value: "3000"
-        - name: REACT_APP_API_URL
-          value: "http://<EXTERNAL-IP-OF-FACADE-SERVICE>:8080"
         ports:
         - containerPort: 3000
         resources:
