@@ -1,4 +1,5 @@
 ---
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -19,7 +20,14 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
-          - path: /api
+          - path: /auth/signup
+            pathType: Prefix
+            backend:
+              service:
+                name: facade-service
+                port:
+                  number: 8080
+          - path: /auth/signup
             pathType: Prefix
             backend:
               service:
