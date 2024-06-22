@@ -19,14 +19,7 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
-          - path: /auth/signup
-            pathType: Prefix
-            backend:
-              service:
-                name: facade-service
-                port:
-                  number: 8080
-          - path: /auth/signup
+          - path: /api
             pathType: Prefix
             backend:
               service:
