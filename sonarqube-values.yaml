@@ -6,7 +6,10 @@
 
 service:
   type: NodePort
-  nodePort: 31111
+  ports:
+  - port: 31111
+    targetPort: 31111
+
 
 postgresql:
   persistence: 
