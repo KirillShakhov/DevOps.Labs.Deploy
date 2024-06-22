@@ -15,7 +15,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: chat-service
-        image: kirillshakhov/chat-service:eb54fcd4
+        image: kirillshakhov/chat-service:b2d4161d
         ports:
         - containerPort: 9994
         resources:
