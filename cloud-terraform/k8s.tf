@@ -118,7 +118,7 @@ resource "yandex_kubernetes_node_group" "worker_nodes" {
 
   scale_policy {
     fixed_scale {
-      size = 3
+      size = 6
     }
   }
 
