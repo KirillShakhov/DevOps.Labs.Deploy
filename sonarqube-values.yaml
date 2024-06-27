@@ -5,9 +5,10 @@
 # kubectl port-forward svc/my-sonarqube-sonarqube 31111:31111 --namespace sonarqube
 
 service:
-  type: LoadBalancer
-  externalPort: 31111
-  internalPort: 31111
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 31111
 
 postgresql:
   persistence: 
