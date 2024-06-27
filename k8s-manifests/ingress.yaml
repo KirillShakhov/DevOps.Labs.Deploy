@@ -16,6 +16,13 @@ spec:
                 name: facade-service
                 port:
                   number: 8080
+          - path: /messages(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: facade-service
+                port:
+                  number: 8080
           - path: /
             pathType: Prefix
             backend:
