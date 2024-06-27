@@ -15,7 +15,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: frontend
-        image: kirillshakhov/devops-frontend-image:c324ce9f
+        image: kirillshakhov/devops-frontend-image:e9cb3ceb
         env:
         - name: PORT
           value: "3000"
