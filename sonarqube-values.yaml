@@ -5,7 +5,7 @@
 # kubectl port-forward svc/my-sonarqube-sonarqube 31111:31111 --namespace sonarqube
 
 service:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 31111
