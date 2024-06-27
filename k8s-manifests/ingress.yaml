@@ -1,14 +1,21 @@
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
     - http:
         paths:
+          - path: /auth/(signup|signin)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: facade-service
+                port:
+                  number: 8080
           - path: /
             pathType: Prefix
             backend:
@@ -16,10 +23,3 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
-          - path: /auth/**
-            pathType: Prefix
-            backend:
-              service:
-                name: facade-service
-                port:
-                  number: 8080
